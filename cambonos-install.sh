@@ -187,6 +187,7 @@ then
 	(lspci | grep VGA) | grep -o 'Intel' >/dev/null && GPU='intel'
 	(lspci | grep VGA) | grep -o 'AMD' >/dev/null && GPU='amd'
 	(lspci | grep VGA) | grep -o 'NVIDIA' >/dev/null && GPU='nvidia'
+	(lspci | grep "3D controller") | grep -o 'NVIDIA' >/dev/null && GPU='nvidia3d'
 	case $GPU in
 		amd)
 			echo -e "\n>>Instalando drivers graficos de AMD\c"
@@ -194,6 +195,9 @@ then
 		nvidia)
 			echo -e "\n>>Instalando drivers graficos de Nvidia\c"
 			echo "pacman --noconfirm -Sy xf86-video-vesa nvidia lib32-nvidia-utils nvidia-utils nvidia-settings nvidia-dkms vulkan-icd-loader lib32-vulkan-icd-loader || exit 1" | ARCH && DONE || ERROR ;;
+		nvidia3d)
+			echo -e "\n>>Instalando drivers graficos de Nvidia\c"
+			echo "pacman --noconfirm -Sy xf86-video-vesa nvidia lib32-nvidia-utils nvidia-utils nvidia-settings nvidia-dkms vulkan-icd-loader lib32-vulkan-icd-loader optimus-manager optimus-manager-qt   || exit 1" | ARCH && DONE || ERROR ;;
   		intel)
   			echo -e "\n>>Instalando drivers graficos Intel\c"
 			echo "pacman --noconfirm -Sy xf86-video-vesa xf86-video-intel lib32-mesa mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader || exit 1" | ARCH && DONE || ERROR ;;
